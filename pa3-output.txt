@@ -1,0 +1,105 @@
+
+Data: daily closes for Bonds, Gold, SP500, Bitcoin
+Dates with all four prices: 2015-01-05 to 2025-12-31 (2765 daily returns)
+The first 260 days are used to warm up the signals.
+Backtest results cover 2016-01-15 to 2025-12-31 (2505 days)
+
+Settings
+  Momentum: 90 day regression, volatility from 60 days, rebalance every 5 days, risk budget 0.05 per asset
+  Mean reversion: 20 day average, buy at z below -1.5 and sell at z of 0.0
+  Trading cost: 10 basis points per amount traded
+  Orders are filled at the close 1 trading day(s) after the signal day
+  Risk free rate: 0
+
+=== Backtest results, after trading costs ===
+                Momentum Mean Reversion Combined SPY Buy-and-Hold Equal Weight BND Buy-and-Hold
+Total Return      144.2%          28.9%    79.5%           319.2%      1224.3%            21.6%
+CAGR                9.4%           2.6%     6.1%            15.5%        29.7%             2.0%
+Volatility          7.0%          10.5%     7.5%            18.0%        19.6%             5.5%
+Sharpe              1.32           0.30     0.82             0.89         1.42             0.39
+Sortino             1.84           0.41     1.13             1.26         2.13             0.54
+Max Drawdown      -11.6%         -24.3%   -14.3%           -33.7%       -35.2%           -18.6%
+Calmar              0.81           0.11     0.42             0.46         0.84             0.11
+Avg Exposure       80.1%          25.0%    52.5%           100.0%       100.0%           100.0%
+Annual Turnover     4.90          10.41     7.65             0.00         0.78             0.00
+
+=== Against the S&P 500 (SPY Buy-and-Hold) ===
+            Momentum Mean Reversion Combined Equal Weight BND Buy-and-Hold
+Beta            0.17           0.27     0.22         0.48             0.04
+Alpha           6.5%          -1.2%     2.6%        20.2%             1.5%
+Correlation     0.44           0.46     0.53         0.44             0.13
+
+=== Return by calendar year ===
+     Momentum Mean Reversion Combined SPY Buy-and-Hold Equal Weight BND Buy-and-Hold
+Date                                                                                
+2016    12.8%           9.6%    11.3%            19.0%        33.7%             1.9%
+2017    18.1%          14.2%    16.3%            21.7%       144.0%             4.0%
+2018     0.3%         -15.6%    -7.8%            -4.6%       -24.1%             0.1%
+2019    11.7%           7.5%     9.7%            31.2%        40.2%             8.8%
+2020    14.0%          -2.9%     5.4%            18.3%        69.1%             7.7%
+2021     0.9%           6.2%     3.7%            28.7%        26.0%            -1.9%
+2022    -4.9%          -9.7%    -7.1%           -18.2%       -26.3%           -13.1%
+2023    12.1%          11.8%    12.0%            26.2%        42.8%             5.7%
+2024    16.8%           6.3%    11.5%            24.9%        42.2%             1.4%
+2025    14.2%           2.4%     8.2%            17.7%        19.5%             7.1%
+
+=== Block bootstrap of the Sharpe ratio (2000 resamples of 21 day blocks) ===
+                  Sharpe  CI Low  CI High  Difference vs SPY  Diff CI Low  Diff CI High  Share Below SPY
+Series                                                                                                  
+Momentum            1.32    0.66     2.03               0.42        -0.16          0.99             0.08
+Mean Reversion      0.30   -0.22     0.88              -0.60        -1.27         -0.01             0.98
+Combined            0.82    0.25     1.52              -0.07        -0.61          0.47             0.60
+SPY Buy-and-Hold    0.89    0.29     1.60                NaN          NaN           NaN              NaN
+Equal Weight        1.42    0.72     2.11               0.53        -0.13          1.07             0.05
+BND Buy-and-Hold    0.39   -0.20     1.00              -0.51        -1.25          0.16             0.94
+
+=== Sensitivity checks (Sharpe ratio unless noted) ===
+
+Momentum: regression window (days) and rebalance interval (days)
+        rebalance 5  rebalance 21
+window                           
+40             1.31          1.20
+60             1.38          1.40
+90             1.32          1.16
+120            1.21          1.32
+180            1.34          1.41
+250            1.17          1.16
+
+Momentum: risk budget per asset (annual volatility)
+               0.03   0.05   0.08   0.12
+Sharpe        1.377  1.316  1.271  1.167
+CAGR          0.079  0.094  0.108  0.111
+Max Drawdown -0.115 -0.116 -0.131 -0.175
+
+Mean reversion: moving average window (days) and entry z score
+        entry z 1.0  entry z 1.5  entry z 2.0
+window                                       
+10             0.20         0.28         0.30
+20             0.38         0.30         0.29
+40             0.42         0.45         0.33
+
+Trading cost (basis points per amount traded)
+                  0 bps  5 bps  10 bps  25 bps  50 bps
+Momentum           1.39   1.35    1.32    1.21    1.03
+Mean Reversion     0.39   0.34    0.30    0.15   -0.10
+Combined           0.93   0.88    0.82    0.67    0.41
+SPY Buy-and-Hold   0.89   0.89    0.89    0.89    0.89
+
+Extra days between the signal day and the trade (0 = traded at the next close, as in the main results)
+                same close  0 extra  1 extra  2 extra
+Momentum              1.28     1.32     1.29     1.26
+Mean Reversion        0.20     0.30     0.29     0.30
+Combined              0.74     0.82     0.82     0.82
+("same close" trades at the close that makes the signal, which is not realistic
+ and is shown only to see how much the one day wait matters.)
+
+Two halves of the backtest period (Sharpe ratio)
+                  First half: 2016-01-15 to 2021-01-05  Second half: 2021-01-06 to 2025-12-31
+Momentum                                          1.57                                   1.06
+Mean Reversion                                    0.24                                   0.36
+Combined                                          0.87                                   0.78
+SPY Buy-and-Hold                                  0.90                                   0.88
+Equal Weight                                      1.84                                   0.94
+BND Buy-and-Hold                                  0.90                                  -0.03
+
+Run Complete
